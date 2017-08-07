@@ -40,7 +40,7 @@ class ItemsController extends Controller
 
             // 扱い易いように Item としてインスタンスを作成する（保存はしない）
             foreach ($rws_response->getData()['Items'] as $rws_item) {
-                $item = new Item();
+                $item = new \App\Item();
                 $item->code = $rws_item['Item']['itemCode'];
                 $item->name = $rws_item['Item']['itemName'];
                 $item->url = $rws_item['Item']['itemUrl'];
@@ -53,7 +53,6 @@ class ItemsController extends Controller
             'keyword' => $keyword,
             'items' => $items,
         ]);
-    }
     }
 
     /**
@@ -75,7 +74,15 @@ class ItemsController extends Controller
      */
     public function show($id)
     {
-        //
+        $item = \App\Item::find($id);
+      $want_users = $item->want_users;
+      $have_users = $item->have_users;
+
+      return view('items.show', [
+          'item' => $item,
+          'want_users' => $want_users,
+          'have_users' => $have_users
+      ]);
     }
 
     /**
